@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.AuthServer", "IdentityServer4.AuthServer\IdentityServer4.AuthServer.csproj", "{69FBCAD7-97D3-42C3-A31C-4BED84594E08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.WebAppMvc", "IdentityServer4.WebAppMvc\IdentityServer4.WebAppMvc.csproj", "{A8CC9228-C393-4712-9AC9-34542F1ED154}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.WebAppMvc1", "IdentityServer4.WebAppMvc\IdentityServer4.WebAppMvc1.csproj", "{A8CC9228-C393-4712-9AC9-34542F1ED154}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.API1", "IdentityServer4.API1\IdentityServer4.API1.csproj", "{D0851A29-B775-4580-894B-52BE9E830A1B}"
 EndProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Ports.txt = Ports.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4.WebAppMvc2", "IdentityServer4.WebAppMvc2\IdentityServer4.WebAppMvc2.csproj", "{D3F5BE17-1904-4E3A-9EBC-77C1858C286A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{7B64D4B4-E99A-406F-9607-A19297273B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B64D4B4-E99A-406F-9607-A19297273B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B64D4B4-E99A-406F-9607-A19297273B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F5BE17-1904-4E3A-9EBC-77C1858C286A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F5BE17-1904-4E3A-9EBC-77C1858C286A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F5BE17-1904-4E3A-9EBC-77C1858C286A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F5BE17-1904-4E3A-9EBC-77C1858C286A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

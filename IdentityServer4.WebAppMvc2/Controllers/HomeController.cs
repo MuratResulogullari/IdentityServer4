@@ -1,8 +1,8 @@
-﻿using IdentityServer4.AuthServer.Models;
+﻿using IdentityServer4.WebAppMvc2.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace IdentityServer4.AuthServer.Controllers
+namespace IdentityServer4.WebAppMvc2.Controllers
 {
     public class HomeController : Controller
     {
@@ -17,14 +17,7 @@ namespace IdentityServer4.AuthServer.Controllers
         {
             return View();
         }
-        public IActionResult Login()
-        {
-            return View(new LoginInputModel { });
-        } 
-        public IActionResult Login(LoginInputModel model)
-        {
-            return View();
-        }
+
         public IActionResult Privacy()
         {
             return View();
