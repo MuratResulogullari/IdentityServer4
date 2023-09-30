@@ -1,0 +1,8 @@
+
+AuthServer -->  https://localhost:7287			http://localhost:5082
+
+WebAppMvc  -->  https://localhost:7118			http://localhost:5052
+
+API 1      -->  https://localhost:7196			http://localhost:5013
+
+API 2      -->  https://localhost:7274			http://localhost:5195
