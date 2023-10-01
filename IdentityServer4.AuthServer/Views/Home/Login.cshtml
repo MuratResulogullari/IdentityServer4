@@ -1,14 +1,13 @@
 ﻿@model LoginInputModel
-
-
-
 <div class="row"> 
     <div class="col-12">
         <div class="row">
             <div class="col-4"></div>
             <div class="col-4">
-                <form asp-action="login" >
-                    <div class="form-control">
+                <form method="post" asp-controller="home" asp-action="login" >
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="ReturnUrl"/>
+                   
                         <div class="form-text">
                             <input asp-for="Username" type="text" />
                             <label asp-for="Username" class="col-form-label"></label>
@@ -19,7 +18,7 @@
                             <label asp-for="Password"  class="col-form-label"></label>
                             <span asp-validation-for="Password" class="alert-danger"></span>
                         </div>
-                    </div>
+                        <input type="button"  class="btn btn-outline-secondary" value="Login"/>
                 </form>
             </div>
             <div class="col-4"></div>

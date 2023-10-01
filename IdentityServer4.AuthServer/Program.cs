@@ -1,8 +1,18 @@
+﻿
+using IdentityServer4.AuthServer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddIdentityServer()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryApiScopes(Config.GetApiScopes())
+                .AddInMemoryClients(Config.GetClients())
+                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
+                //.AddTestUsers(Config.GetUsers().ToList())
+                .AddDeveloperSigningCredential();// Senin için public key ve private key üretir tempkey.jwk dosyasında tutar oluşturur
+                //.AddSigningCredential(); // Gerçek ortam için credentialları belirlernen yer
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -17,6 +27,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+// Identity Server 4 Middlewaresini eklemek zorundasi
+app.UseIdentityServer();
+
 
 app.UseAuthorization();
 

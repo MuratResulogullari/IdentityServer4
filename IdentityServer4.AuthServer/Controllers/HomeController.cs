@@ -20,7 +20,9 @@ namespace IdentityServer4.AuthServer.Controllers
         public IActionResult Login()
         {
             return View(new LoginInputModel { });
-        } 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(LoginInputModel model)
         {
             return View();
