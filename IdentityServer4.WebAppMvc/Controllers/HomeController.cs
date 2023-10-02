@@ -17,6 +17,12 @@ namespace IdentityServer4.WebAppMvc.Controllers
         {
             return View();
         }
+        
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;  
+            return View();
+        }
 
         public IActionResult Privacy()
         {

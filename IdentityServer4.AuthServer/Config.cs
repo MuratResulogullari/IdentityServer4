@@ -62,14 +62,25 @@ namespace IdentityServer4.AuthServer
                     AllowedGrantTypes=GrantTypes.Hybrid, // Response type code ve token_id istediğimiz için Hyprid seçiyorum
                     RedirectUris=new List<string>{"https://localhost:7118/signin-oidc"},//WebAppMVC1 client çalıştığı endpoint veriyoruz ve diyoruz ki Token almak için istekte bulunursa bu client
                     // Geri donuş ednpoint /sign-oidc bunu verek sağlıyoruz iki tarafta openId connect paketini iki tarfta kullanıyor ve geri dönüşü  AuthServer bu enpoint response atıyor
-
+                    PostLogoutRedirectUris=new List<string>{"https://localhost:7118/signout-callback-oidc"},//Çıkış yapılınca dönecek yer
                     AllowedScopes={
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık 
                        "api1.read",
+                       "CountryAndCity"
+                       ,"Roles"
+
                      },
-                   // RequirePkce=true, // Bu Native Clients (mobile,spa,akıllı saat,devices)token saklıyamadıkları için  Prof Key for Code Exchangeönce code_challenge sonra code_verifier ile doğrulayarak token alır
+                     // RequirePkce=true, // Bu Native Clients (mobile,spa,akıllı saat,devices)token saklıyamadıkları için  Prof Key for Code Exchangeönce code_challenge sonra code_verifier ile doğrulayarak token alır
                     RequirePkce=false, // Bizim Bir Server Side Client olduğu için token false çekiyoruz çünkü cookide saklıyacağız  
+                    AccessTokenLifetime=2*60*60,//Access token için bir zaman verdik saniye cinsinde olacak
+                    AllowOfflineAccess=true,// Artık Bir refresh token yayınlayacaktır true yaparsak
+                    RefreshTokenUsage=TokenUsage.ReUse, // Birden fazla kullanılsın OneTimeOnly kullanarak bir kerelikte yappabilirsin
+                    AbsoluteRefreshTokenLifetime=(int)(DateTime.Now.AddYears(6)-DateTime.Now).TotalSeconds, // 6 yıl sonra ömrü kesinlikle biter
+                    SlidingRefreshTokenLifetime=(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds, // 1 aylık süre içerisinde her kullanıldığında ömrünü 1 ay daha uzatır
+                    RequireConsent=true,// Onay  sayfasına yönlendirme yapar ve sen client login olduktan sonra nelere erieşceğini bilirtirsiniz
+                    
                  },
                     
             };
@@ -78,10 +89,16 @@ namespace IdentityServer4.AuthServer
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
-                {
-                    new IdentityResources.OpenId(),//subId
-                    new IdentityResources.Profile()// Kullanıcı hakkında claimleri tutar name,family_name,given_ame,midlle_name,nickname,preferred_username,profile,picture,website,gender,birthdate,zoneinfo,locale,updated_at
-                };
+            {
+                new IdentityResources.OpenId(),     //subId
+                new IdentityResources.Profile(),    // Kullanıcı hakkında claimleri tutar name,family_name,given_ame,midlle_name,nickname,preferred_username,profile,picture,website,gender,birthdate,zoneinfo,locale,updated_at
+                new IdentityResource(){Name="CountryAndCity",DisplayName="Country And City",Description="Kullanıcı ülke ve şehir bilgisi",UserClaims=new List<string> {"country","city"}},
+                new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new [] { "role"} },
+                //new IdentityResource() {Name = IdentityServerConstants.StandardScopes.OfflineAccess},
+                //new IdentityResource(){ Name="UserClaims", DisplayName="UserClaims",Description="Phone Number Email ve User Id bilgisini taşır", UserClaims= new [] { "UserId", "Phone","Email"}},
+                //new IdentityResource(){ Name="RoleClaims",DisplayName="RoleClaims", Description="Role Yetkileri", UserClaims=new [] { "instructorclaim" } },
+
+            };
         }
 
         public static IEnumerable<TestUser> GetUsers()
@@ -97,6 +114,9 @@ namespace IdentityServer4.AuthServer
                             new Claim("given_name","Murat"),
                             new Claim("family_name","Resuloğulları"),
                             new Claim("updated_at",DateTime.Now.ToString()),
+                            new Claim("country","Türkiye"),
+                            new Claim("city","İzmir"),
+                            new Claim("role","administrator")
                         }
                     },
                      new TestUser()
@@ -108,6 +128,9 @@ namespace IdentityServer4.AuthServer
                             new Claim("given_name","Ali"),
                             new Claim("family_name","Veli"),
                             new Claim("updated_at",DateTime.Now.ToString()),
+                            new Claim("country","Türkiye"),
+                            new Claim("city","Konya"),
+                             new Claim("role","manager")
                         }
                     }
                 };
