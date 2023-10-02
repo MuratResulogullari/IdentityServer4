@@ -18,11 +18,6 @@ namespace IdentityServer4.WebAppMvc2.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "manager")]
-        public IActionResult Orders()
-        {
-            return View();
-        }
         public IActionResult Privacy()
         {
             return View();

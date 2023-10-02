@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "Orders";
+}
+@model List<OrderViewModel>
+<h1>Orders</h1>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Name</td>
+                <td>@item.Surname</td>
+                <td>@item.Address</td>
+                <td>
+                    @foreach (var orderItem in item.OrderItems)
+                    {
+                        <tr>
+                            <td>@orderItem.PrductName</td>
+                            <td>@orderItem.Price</td>
+
+                        </tr>
+                        
+                    }
+
+
+
+                </td>
+                <th><a asp-action="Edit">Edit</a></th>
+                <th><a asp-action="Delete">Delete</a></th>
+            </tr>
+        }
+    </tbody>
+</table>

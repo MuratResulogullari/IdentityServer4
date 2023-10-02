@@ -20,6 +20,10 @@ builder.Services.AddAuthentication(options =>
     options.GetClaimsFromUserInfoEndpoint = true;// Arka plande userinfo endpoint istek atıp user infoları claims içerisinde ekler
     options.SaveTokens = true;// Başaşrılı bir Authentication sağlandıktan sonra Authorization için token kaydet true ise 
     options.Scope.Add("api1.read"); // Eğerki bu istek clientin AllowedScopes larında taımlanmışsa hata verecektir
+    options.Scope.Add("api2.read"); // Eğerki bu istek clientin AllowedScopes larında taımlanmışsa hata verecektir
+    options.Scope.Add("api1.update"); // Eğerki bu istek clientin AllowedScopes larında taımlanmışsa hata verecektir
+    options.Scope.Add("api2.write"); // Eğerki bu istek clientin AllowedScopes larında taımlanmışsa hata verecektir
+    options.Scope.Add("api2.update"); // Eğerki bu istek clientin AllowedScopes larında taımlanmışsa hata verecektir
     options.Scope.Add("offline_access");
     options.Scope.Add("CountryAndCity");
     options.Scope.Add("Roles");

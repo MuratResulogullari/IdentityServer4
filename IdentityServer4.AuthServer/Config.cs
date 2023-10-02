@@ -95,7 +95,7 @@ namespace IdentityServer4.AuthServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık 
-                      "api1.read","api1.update","api2.write","api2.update",
+                      "api1.read","api2.read","api1.update","api2.write","api2.update",
                        "CountryAndCity"
                        ,"Roles"
 
