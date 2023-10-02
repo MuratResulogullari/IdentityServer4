@@ -36,61 +36,81 @@ namespace IdentityServer4.AuthServer
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>() {
-                new Client()
-                {
+                //new Client()
+                //{
+                //    ClientId="WebAppMVC1",
+                //    ClientName="Web MVC 1",
+                //    ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
+                //    AllowedGrantTypes={GrantType.ClientCredentials},
+                //    AllowedScopes={"api1.read" }
+                //},
+                // new Client()
+                //{
+                //    ClientId="WebAppMVC2",
+                //    ClientName="Web  MVC 2",
+                //    ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
+                //    AllowedGrantTypes={GrantType.ClientCredentials},
+                //    AllowedScopes={"api1.read","api1.update","api2.write","api2.update"}
+                //}
+
+                // Identity User Üyelik Sistemi olunca
+                 new Client()
+                    {
                     ClientId="WebAppMVC1",
                     ClientName="Web MVC 1",
                     ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
-                    AllowedGrantTypes={GrantType.ClientCredentials},
-                    AllowedScopes={"api1.read" }
-                },
-                 new Client()
-                {
-                    ClientId="WebAppMVC2",
-                    ClientName="Web  MVC 2",
-                    ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
-                    AllowedGrantTypes={GrantType.ClientCredentials},
-                    AllowedScopes={"api1.read","api1.update","api2.write","api2.update"}
-                }
+                    AllowedGrantTypes=GrantTypes.Hybrid, // Response type code ve token_id istediğimiz için Hyprid seçiyorum
+                    RedirectUris=new List<string>{"https://localhost:7118/signin-oidc"},//WebAppMVC1 client çalıştığı endpoint veriyoruz ve diyoruz ki Token almak için istekte bulunursa bu client
+                    // Geri donuş ednpoint /sign-oidc bunu verek sağlıyoruz iki tarafta openId connect paketini iki tarfta kullanıyor ve geri dönüşü  AuthServer bu enpoint response atıyor
+
+                    AllowedScopes={
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                       "api1.read",
+                     },
+                   // RequirePkce=true, // Bu Native Clients (mobile,spa,akıllı saat,devices)token saklıyamadıkları için  Prof Key for Code Exchangeönce code_challenge sonra code_verifier ile doğrulayarak token alır
+                    RequirePkce=false, // Bizim Bir Server Side Client olduğu için token false çekiyoruz çünkü cookide saklıyacağız  
+                 },
+                    
             };
         }
 
-        //    public static IEnumerable<IdentityResource> GetIdentityResources()
-        //    {
-        //        return new List<IdentityResource>
-        //        {
-        //            new IdentityResources.OpenId(),//subId
-        //            new IdentityResources.Profile()// Kullanıcı hakkında claimleri tutar name,family_name,given_ame,midlle_name,nickname,preferred_username,profile,picture,website,gender,birthdate,zoneinfo,locale,updated_at
-        //        };
-        //    }
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+                {
+                    new IdentityResources.OpenId(),//subId
+                    new IdentityResources.Profile()// Kullanıcı hakkında claimleri tutar name,family_name,given_ame,midlle_name,nickname,preferred_username,profile,picture,website,gender,birthdate,zoneinfo,locale,updated_at
+                };
+        }
 
-        //    public static IEnumerable<TestUser> GetUsers()
-        //    {
-        //        return new List<TestUser>()
-        //        {
-        //            new TestUser()
-        //            {
-        //                SubjectId="1",
-        //                Username="murat.resulogullari",
-        //                Password="123.Mr*",
-        //                Claims=new List<Claim> {
-        //                    new Claim("given_name","Murat"),
-        //                    new Claim("family_name","Resuloğulları"),
-        //                    new Claim("updated_at",DateTime.Now.ToString()),
-        //                }
-        //            },
-        //             new TestUser()
-        //            {
-        //                SubjectId="2",
-        //                Username="ali.veli",
-        //                Password="ali123",
-        //                Claims=new List<Claim> {
-        //                    new Claim("given_name","Ali"),
-        //                    new Claim("family_name","Veli"),
-        //                    new Claim("updated_at",DateTime.Now.ToString()),
-        //                }
-        //            }
-        //        };
-        //    }
+        public static IEnumerable<TestUser> GetUsers()
+        {
+            return new List<TestUser>()
+                {
+                    new TestUser()
+                    {
+                        SubjectId="1",
+                        Username="murat.resulogullari",
+                        Password="123.Mr*",
+                        Claims=new List<Claim> {
+                            new Claim("given_name","Murat"),
+                            new Claim("family_name","Resuloğulları"),
+                            new Claim("updated_at",DateTime.Now.ToString()),
+                        }
+                    },
+                     new TestUser()
+                    {
+                        SubjectId="2",
+                        Username="ali.veli",
+                        Password="ali123",
+                        Claims=new List<Claim> {
+                            new Claim("given_name","Ali"),
+                            new Claim("family_name","Veli"),
+                            new Claim("updated_at",DateTime.Now.ToString()),
+                        }
+                    }
+                };
+        }
     }
 }

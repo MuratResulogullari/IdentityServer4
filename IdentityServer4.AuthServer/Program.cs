@@ -9,8 +9,8 @@ builder.Services.AddIdentityServer()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes())
                 .AddInMemoryClients(Config.GetClients())
-                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
-                //.AddTestUsers(Config.GetUsers().ToList())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddTestUsers(Config.GetUsers().ToList())
                 .AddDeveloperSigningCredential();// Senin için public key ve private key üretir tempkey.jwk dosyasında tutar oluşturur
                 //.AddSigningCredential(); // Gerçek ortam için credentialları belirlernen yer
 var app = builder.Build();

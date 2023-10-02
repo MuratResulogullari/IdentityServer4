@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h3>Bu safayı yanlızca üyeler görebilir</h3>
+<h4>Claim Datas</h4>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Claim Type</th>
+            <th>Claim Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in User.Claims)
+        {
+            <tr>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<h4>Authentication Datas</h4>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Auth Property Key</th>
+            <th>Auth Property Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in (await Context.AuthenticateAsync()).Properties.Items)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
