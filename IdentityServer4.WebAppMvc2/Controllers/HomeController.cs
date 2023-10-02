@@ -1,4 +1,5 @@
 ﻿using IdentityServer4.WebAppMvc2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -17,9 +18,18 @@ namespace IdentityServer4.WebAppMvc2.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "manager")]
+        public IActionResult Orders()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
+            return View();
+        }
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 

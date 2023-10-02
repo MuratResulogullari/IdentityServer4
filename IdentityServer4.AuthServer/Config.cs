@@ -79,7 +79,35 @@ namespace IdentityServer4.AuthServer
                     RefreshTokenUsage=TokenUsage.ReUse, // Birden fazla kullanılsın OneTimeOnly kullanarak bir kerelikte yappabilirsin
                     AbsoluteRefreshTokenLifetime=(int)(DateTime.Now.AddYears(6)-DateTime.Now).TotalSeconds, // 6 yıl sonra ömrü kesinlikle biter
                     SlidingRefreshTokenLifetime=(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds, // 1 aylık süre içerisinde her kullanıldığında ömrünü 1 ay daha uzatır
-                    RequireConsent=true,// Onay  sayfasına yönlendirme yapar ve sen client login olduktan sonra nelere erieşceğini bilirtirsiniz
+                    RequireConsent=false,// Onay  sayfasına yönlendirme yapar ve sen client login olduktan sonra nelere erieşceğini bilirtirsiniz
+                    
+                 },
+                    new Client()
+                    {
+                    ClientId="WebAppMVC2",
+                    ClientName="Web MVC 2",
+                    ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
+                    AllowedGrantTypes=GrantTypes.Hybrid, // Response type code ve token_id istediğimiz için Hyprid seçiyorum
+                    RedirectUris=new List<string>{"https://localhost:7161/signin-oidc"},//WebAppMVC2 client çalıştığı endpoint veriyoruz ve diyoruz ki Token almak için istekte bulunursa bu client
+                    // Geri donuş ednpoint /sign-oidc bunu verek sağlıyoruz iki tarafta openId connect paketini iki tarfta kullanıyor ve geri dönüşü  AuthServer bu enpoint response atıyor
+                    PostLogoutRedirectUris=new List<string>{"https://localhost:7161/signout-callback-oidc"},//Çıkış yapılınca dönecek yer
+                    AllowedScopes={
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık 
+                      "api1.read","api1.update","api2.write","api2.update",
+                       "CountryAndCity"
+                       ,"Roles"
+
+                     },
+                     // RequirePkce=true, // Bu Native Clients (mobile,spa,akıllı saat,devices)token saklıyamadıkları için  Prof Key for Code Exchangeönce code_challenge sonra code_verifier ile doğrulayarak token alır
+                    RequirePkce=false, // Bizim Bir Server Side Client olduğu için token false çekiyoruz çünkü cookide saklıyacağız  
+                    AccessTokenLifetime=2*60*60,//Access token için bir zaman verdik saniye cinsinde olacak
+                    AllowOfflineAccess=true,// Artık Bir refresh token yayınlayacaktır true yaparsak
+                    RefreshTokenUsage=TokenUsage.ReUse, // Birden fazla kullanılsın OneTimeOnly kullanarak bir kerelikte yappabilirsin
+                    AbsoluteRefreshTokenLifetime=(int)(DateTime.Now.AddYears(6)-DateTime.Now).TotalSeconds, // 6 yıl sonra ömrü kesinlikle biter
+                    SlidingRefreshTokenLifetime=(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds, // 1 aylık süre içerisinde her kullanıldığında ömrünü 1 ay daha uzatır
+                    RequireConsent=false,// Onay  sayfasına yönlendirme yapar ve sen client login olduktan sonra nelere erieşceğini bilirtirsiniz
                     
                  },
                     
