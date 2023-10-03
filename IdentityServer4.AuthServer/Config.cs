@@ -131,7 +131,30 @@ namespace IdentityServer4.AuthServer
                         PostLogoutRedirectUris={ "http://localhost:4200" },// callback ayarlaması
                         AllowedCorsOrigins={ "http://localhost:4200" },
 
-                    }
+                    },
+                      new Client()
+                    {
+                    ClientId="Client1-ResourceOwner-Mvc",
+                    ClientName="Client 1 app mvc application",
+                    ClientSecrets=new [] {new  Secret("secret".ToSha256()) },
+                    AllowedGrantTypes=GrantTypes.ResourceOwnerPassword, // Flow değiştiriyoruz
+                     AllowedScopes={
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık 
+                       "api1.read",
+                       "CountryAndCity"
+                       ,"Roles"
+
+                     },
+                      AccessTokenLifetime=2*60*60,//Access token için bir zaman verdik saniye cinsinde olacak
+                      AllowOfflineAccess=true,// Artık Bir refresh token yayınlayacaktır true yaparsak
+                      RefreshTokenUsage=TokenUsage.ReUse, // Birden fazla kullanılsın OneTimeOnly kullanarak bir kerelikte yappabilirsin
+                      AbsoluteRefreshTokenLifetime=(int)(DateTime.Now.AddYears(6)-DateTime.Now).TotalSeconds, // 6 yıl sonra ömrü kesinlikle biter
+                      SlidingRefreshTokenLifetime=(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds, // 1 aylık süre içerisinde her kullanıldığında ömrünü 1 ay daha uzatır
+                  
+                    
+                 }
 
             };
         }

@@ -21,9 +21,9 @@ namespace IdentityServer4.WebAppMvc1.Controllers
 
         public IActionResult Index()
         {
-            var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
-            var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            var mail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+            //var user = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            //var userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            //var mail = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
             return View();
         }
 

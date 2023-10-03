@@ -21,7 +21,8 @@ builder.Services.AddIdentityServer()
                 //.AddTestUsers(Config.GetUsers().ToList())
                 .AddDeveloperSigningCredential()// Senin için public key ve private key üretir tempkey.jwk dosyasında tutar oluşturur
                                                 //.AddSigningCredential(); // Gerçek ortam için credentialları belirlernen yer
-                .AddProfileService<CustomUserProfileService>();
+                .AddProfileService<CustomUserProfileService>()
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>(); // Resource credentials validator custom yazdık
 
 builder.Services.AddScoped<ICustomUserRepository, CustomUserRepository>();
 
