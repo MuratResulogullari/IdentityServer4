@@ -110,8 +110,29 @@ namespace IdentityServer4.AuthServer
                     SlidingRefreshTokenLifetime=(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds, // 1 aylık süre içerisinde her kullanıldığında ömrünü 1 ay daha uzatır
                     RequireConsent=false,// Onay  sayfasına yönlendirme yapar ve sen client login olduktan sonra nelere erieşceğini bilirtirsiniz
                     
-                 },
-                    
+                 }, new Client()
+                    {
+                        ClientId="spa-client",
+                        //ClientSecrets= Spa ve mobilde burada belirtmiyoruz ve aşağıdakileri tanımlıyoruz
+                        RequireClientSecret=false,// Özellikle istemediğini belirtiyorsun
+                        RequirePkce=true, //Bunu tanımlayınca secret kendisi tutuyor js tarafına göndermiyor
+                        AllowedGrantTypes=GrantTypes.Code,
+                        ClientName="Spa Client (Angular)",
+                        AllowedScopes={
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Email,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık
+                            "api1.read",
+                            "CountryAndCity",
+                            "Roles"
+                        },
+                        RedirectUris={"http://localhost:4200/callback"}, // http olarak ayarlıyoruz
+                        PostLogoutRedirectUris={ "http://localhost:4200" },// callback ayarlaması
+                        AllowedCorsOrigins={ "http://localhost:4200" },
+
+                    }
+
             };
         }
 
