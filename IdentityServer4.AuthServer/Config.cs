@@ -98,6 +98,7 @@ namespace IdentityServer4.AuthServer
                       "api1.read","api2.read","api1.update","api2.write","api2.update",
                        "CountryAndCity"
                        ,"Roles"
+                       ,IdentityServerConstants.StandardScopes.Email
 
                      },
                      // RequirePkce=true, // Bu Native Clients (mobile,spa,akıllı saat,devices)token saklıyamadıkları için  Prof Key for Code Exchangeönce code_challenge sonra code_verifier ile doğrulayarak token alır
@@ -125,7 +126,7 @@ namespace IdentityServer4.AuthServer
                 //new IdentityResource() {Name = IdentityServerConstants.StandardScopes.OfflineAccess},
                 //new IdentityResource(){ Name="UserClaims", DisplayName="UserClaims",Description="Phone Number Email ve User Id bilgisini taşır", UserClaims= new [] { "UserId", "Phone","Email"}},
                 //new IdentityResource(){ Name="RoleClaims",DisplayName="RoleClaims", Description="Role Yetkileri", UserClaims=new [] { "instructorclaim" } },
-
+                new IdentityResources.Email(),
             };
         }
 

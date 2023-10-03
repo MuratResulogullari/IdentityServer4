@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("offline_access");
     options.Scope.Add("CountryAndCity");
     options.Scope.Add("Roles");
+    options.Scope.Add("email");
     options.ClaimActions.MapUniqueJsonKey("country", "country");// profiledan buraya map  yaptık
     options.ClaimActions.MapUniqueJsonKey("city", "city");
     options.ClaimActions.MapUniqueJsonKey("role", "role");

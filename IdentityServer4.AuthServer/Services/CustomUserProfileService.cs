@@ -21,7 +21,7 @@ namespace IdentityServer4.AuthServer.Services
             var user = await _customUserRepository.FindById(userId);
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name,user.Username),
+                new Claim("name",user.Username),
                 new Claim(JwtRegisteredClaimNames.Email,user.Email),
                 new Claim("city",user.City),
             };
@@ -30,7 +30,7 @@ namespace IdentityServer4.AuthServer.Services
             if (user.City == "Konya")
                 claims.Add(new Claim("role", "manager"));
 
-            context.AddRequestedClaims(claims); // Doğru olanı bu dur
+           // context.AddRequestedClaims(claims); // Doğru olanı bu dur
             context.IssuedClaims = claims;// amam buda kullanılır token içerisine gömer claimsleri
         }
 
