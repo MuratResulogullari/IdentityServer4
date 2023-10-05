@@ -1,5 +1,6 @@
 ﻿using IdentityModel.Client;
 using IdentityServer4.WebAppMvc1.Models;
+using IdentityServer4.WebAppMvc1.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,31 @@ namespace IdentityServer4.WebAppMvc1.Controllers
     {
         private readonly IConfiguration _configuration;
 
-        public LoginController(IConfiguration configuration)
+        private readonly IApiResourceHttpClient _apiResourceHttpClient;
+
+        public LoginController(IConfiguration configuration
+            , IApiResourceHttpClient apiResourceHttpClient)
         {
             _configuration = configuration;
+            _apiResourceHttpClient = apiResourceHttpClient;
+        }
+
+        [HttpGet]
+        public IActionResult SignUp()
+        {
+            return View(new UserInputModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp( UserInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+                
+            await _apiResourceHttpClient.CreateUserAsync(model);
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -28,7 +51,7 @@ namespace IdentityServer4.WebAppMvc1.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var client = new HttpClient();
-            var disco = await client.GetDiscoveryDocumentAsync(_configuration["AuthServerConfiguration:EndPoint"].ToString());
+            var disco = await client.GetDiscoveryDocumentAsync(_configuration["IdentityApiConfiguration:EndPoint"].ToString());
             if (disco.IsError)
             {
                 throw new Exception(disco.Error);
@@ -44,7 +67,6 @@ namespace IdentityServer4.WebAppMvc1.Controllers
             {
                 ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı");
                 return View();
-                
             }
 
             var userInfoResponse = await client.GetUserInfoAsync(new UserInfoRequest
@@ -57,7 +79,7 @@ namespace IdentityServer4.WebAppMvc1.Controllers
                 ModelState.AddModelError("", "AccessToken hatalı");
                 return View();
             }
-            var claimsIdentity = new ClaimsIdentity(userInfoResponse.Claims, CookieAuthenticationDefaults.AuthenticationScheme,"name","role");
+            var claimsIdentity = new ClaimsIdentity(userInfoResponse.Claims, CookieAuthenticationDefaults.AuthenticationScheme, "name", "role");
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.StoreTokens(new List<AuthenticationToken>()
@@ -71,11 +93,12 @@ namespace IdentityServer4.WebAppMvc1.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
             return RedirectToAction("Index", "Home");
         }
+
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync("Cookies");//Client çıkış yapıyor
-           // await HttpContext.SignOutAsync("oidc"); // Merkezi yerden çıkış yapıyor
-           return RedirectToAction("Index","Home");
+                                                      // await HttpContext.SignOutAsync("oidc"); // Merkezi yerden çıkış yapıyor
+            return RedirectToAction("Index", "Home");
         }
     }
 }
