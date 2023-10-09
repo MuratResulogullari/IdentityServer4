@@ -73,20 +73,36 @@ namespace IdentiyServer4.Identity.Api
                     ApiSecrets=new[]{ new Secret("secretapi2".Sha256())}, // Basic Auth sağlarken  Password
                     Scopes={"api2.read", "api2.write", "api2.update" },
                 },
-                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
+                new ApiResource("weather_api_resource")
+                {
+                    ApiSecrets=new Secret[] { new Secret("secret".Sha256()) },
+                    Scopes={ 
+                        //"weatherforecast.write", "weatherforecast.read", "weatherforecast.modify", "weatherforecast.remove" 
+                         "IdentityServerApi",
+                        "WeatherApi"
+                    }
+                }
             };
         }
 
         public static IEnumerable<ApiScope> GetApiScopes()
         {
             return new List<ApiScope>() {
+                new ApiScope(IdentityServerConstants.LocalApi.ScopeName,"Identity Server Scope"),
+                new ApiScope("WeatherApi","Weather Api Scope"),
+                //new ApiScope("weather_api_scope","weather api full izin"),
                 new ApiScope("api1.read","API 1 için okuma izni"),
                 new ApiScope("api1.write","API 1 için yazma izni"),
                 new ApiScope("api1.update","API 1 için güncelleme izni"),
                 new ApiScope("api2.read","API 2 için okuma izni"),
                 new ApiScope("api2.write","API 2 için yazma izni"),
                 new ApiScope("api2.update","API 2 için güncelleme izni"),
-                new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
+                //new ApiScope("weatherforecast.write","Weather Forecast yazma"),
+                //new ApiScope("weatherforecast.read","Weather Forecast okuma"),
+                //new ApiScope("weatherforecast.modify","Weather Forecast güncelleme"),
+                //new ApiScope("weatherforecast.remove","Weather Forecast sileme"),
+                 
             };
         }
 
@@ -224,7 +240,35 @@ namespace IdentiyServer4.Identity.Api
                       AllowOfflineAccess=true,// Artık Bir refresh token yayınlayacaktır true yaparsak
                       RefreshTokenUsage=TokenUsage.ReUse, // Birden fazla kullanılsın OneTimeOnly kullanarak bir kerelikte yappabilirsin
                       AbsoluteRefreshTokenLifetime=(int)(DateTime.Now.AddYears(6)-DateTime.Now).TotalSeconds, // 6 yıl sonra ömrü kesinlikle biter
-                  }
+                  },
+                 new Client()
+                    {
+                        ClientId="weather_api_swagger",
+                        ClientName="Weather API",
+                        ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
+                        AllowedGrantTypes=GrantTypes.Code,
+                        RequireClientSecret=false,
+                        RequirePkce=true,
+                        AllowedScopes={
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Email,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServerConstants.StandardScopes.OfflineAccess,//Aşağıda tanımını yaptık
+                            "Roles",
+                            //"weatherforecast.write",
+                            //"weatherforecast.read",
+                            //"weatherforecast.modify",
+                            //"weatherforecast.remove"
+                            IdentityServerConstants.LocalApi.ScopeName,//IdentityServerApi
+                            "WeatherApi"
+                        },
+                        RedirectUris={  "https://localhost:7277/swagger/oauth2-redirect.html"}, // http olarak ayarlıyoruz
+                        PostLogoutRedirectUris={ "https://localhost:7277/signout-callback-oidc"},// callback ayarlaması
+                        AllowedCorsOrigins={"https://localhost:7277"},
+                        FrontChannelLogoutUri="https://localhost:7277/signout-oidc",
+                       
+                         
+                    }
             };
         }
 
@@ -234,12 +278,12 @@ namespace IdentiyServer4.Identity.Api
             {
                 new IdentityResources.OpenId(),     //subId
                 new IdentityResources.Profile(),    // Kullanıcı hakkında claimleri tutar name,family_name,given_ame,midlle_name,nickname,preferred_username,profile,picture,website,gender,birthdate,zoneinfo,locale,updated_at
+                new IdentityResources.Email(),
+                new IdentityResource() {Name = IdentityServerConstants.StandardScopes.OfflineAccess},
                 new IdentityResource(){Name="CountryAndCity",DisplayName="Country And City",Description="Kullanıcı ülke ve şehir bilgisi",UserClaims=new List<string> {"country","city"}},
                 new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new [] { "role"} },
-                //new IdentityResource() {Name = IdentityServerConstants.StandardScopes.OfflineAccess},
-                //new IdentityResource(){ Name="UserClaims", DisplayName="UserClaims",Description="Phone Number Email ve User Id bilgisini taşır", UserClaims= new [] { "UserId", "Phone","Email"}},
-                //new IdentityResource(){ Name="RoleClaims",DisplayName="RoleClaims", Description="Role Yetkileri", UserClaims=new [] { "instructorclaim" } },
-                new IdentityResources.Email(),
+                new IdentityResource(){ Name="UserClaims", DisplayName="UserClaims",Description="Phone Number Email ve User Id bilgisini taşır", UserClaims= new [] { "UserId", "Phone","Email"}},
+                new IdentityResource(){ Name="RoleClaims",DisplayName="RoleClaims", Description="Role Yetkileri", UserClaims=new [] { "instructorclaim" } },
             };
         }
 

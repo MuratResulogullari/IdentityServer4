@@ -28,8 +28,8 @@ builder.Services.AddIdentityServer(options =>
     options.Events.RaiseInformationEvents = true;
     options.Events.RaiseFailureEvents = true;
     options.Events.RaiseSuccessEvents = true;
-
-    // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+    options.UserInteraction.LoginUrl = "/Account/Login";
+    options.UserInteraction.LogoutUrl = "/Account/Logout";
     options.EmitStaticAudienceClaim = true;
 })
     .AddInMemoryIdentityResources(Config.GetIdentityResources())

@@ -12,7 +12,7 @@ namespace IdentityServer4.AuthServer
             return new List<ApiResource>() {
                 new ApiResource("resource_api1")  {   // Basic Auth sağlarken Username
                     ApiSecrets=new[]{ new Secret("secretapi1".Sha256())}, // Basic Auth sağlarken  Password
-                    Scopes={"api1.read", "api1.write", "api1.update" },
+                    Scopes={ "api1.read", "api1.write", "api1.update"},
                 },
                 new ApiResource("resource_api2") { // Basic Auth sağlarken Username
                     ApiSecrets=new[]{ new Secret("secretapi2".Sha256())}, // Basic Auth sağlarken  Password
